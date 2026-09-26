@@ -5,6 +5,7 @@ Main FastAPI application entry point.
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
+from app.api.v1.router import api_v1_router
 
 
 app = FastAPI(
@@ -21,6 +22,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Include API v1 Router
+app.include_router(api_v1_router)
 
 
 @app.get("/health")

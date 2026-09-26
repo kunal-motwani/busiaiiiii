@@ -106,14 +106,14 @@ busiai/
 ## Development Phases
 
 - [x] Phase 0 — Foundation
-- [ ] Phase 1 — Ingestion + Profiling + Auto Insights
-- [ ] Phase 2 — Deterministic Analysis Engine
-- [ ] Phase 3 — AI Investigation + Evidence Layer
-- [ ] Phase 4 — Recommendations + Decision Graph
-- [ ] Phase 5 — What-If Simulation
-- [ ] Phase 6 — Dashboard & UX
-- [ ] Phase 7 — Reliability + Testing
-- [ ] Phase 8 — Deployment + Demo
+- [x] Phase 1 — Ingestion + Profiling + Auto Insights
+- [x] Phase 2 — Deterministic Analysis Engine
+- [x] Phase 3 — AI Investigation + Evidence Layer
+- [x] Phase 4 — Recommendations + Decision Graph
+- [x] Phase 5 — What-If Simulation
+- [x] Phase 6 — Dashboard & UX
+- [x] Phase 7 — Reliability + Testing
+- [x] Phase 8 — Deployment + Demo
 
 ## License
 
