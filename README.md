@@ -2,57 +2,116 @@
 
 > **From data to decisions. With proof.**
 
-BusiAI is an AI-powered business investigation tool that goes beyond generic AI answers. Upload your business data, ask questions in natural language, and get evidence-backed insights with full transparency into how every number was calculated.
+BusiAI is an evidence-first AI business intelligence platform. Upload any business dataset, ask questions in plain English, and get insights backed by verifiable calculations — not hallucinations. Every number is computed deterministically by DuckDB and Python; the LLM only decides *what* to analyze, never *what the answer is*.
 
-## Key Features
+---
 
-- **Auto Insights** — Automatically discovers important changes in your data before you ask
-- **Evidence Layer** — Every claim is backed by verifiable calculations and source data
-- **What-If Simulation** — Explore data-grounded business scenarios with confidence scores
-- **Decision Graph** — Visual reasoning chain from question to evidence to action
+## Features
+
+| Feature | Description |
+|---|---|
+| **Auto Insights** | Automatically surface trend shifts, concentration risks, anomalies, and outliers the moment data is ingested |
+| **AI Investigation Console** | Ask free-form business questions; the engine generates hypotheses, runs SQL queries, and returns a grounded evidence package |
+| **Evidence Layer** | Every finding includes the exact SQL query executed, raw data points, calculation proof, and confidence score |
+| **What-If Simulator** | Parametric scenario modelling with price elasticity, churn dynamics, and conversion levers — with 3-band projections (conservative / base / optimistic) |
+| **Decision Graph** | Visual cause-and-effect reasoning chain from question → evidence → action |
+| **SQL Workbench** | Direct DuckDB query interface against any ingested dataset |
+| **Dataset Profiler** | Automatic column-type detection, null analysis, statistical distributions, cardinality, and outlier scoring |
+| **Zero-hallucination guarantee** | All numeric outputs are computed by DuckDB; LLM outputs are validated against actual data before being shown |
+
+---
 
 ## Architecture
 
 ```
-LLM (reasoning) → Validation → Python/DuckDB (calculations) → Evidence-backed UI
+Upload (CSV/Excel)
+    │
+    ▼
+Ingestion Service ──► DuckDB (in-process)
+    │
+    ▼
+Profiling Service ──► Column types, null rates, key metrics, key dimensions
+    │
+    ▼
+Auto-Insights Engine ──► Deterministic trend / anomaly / concentration detection
+    │
+    ▼
+AI Investigation ──► LLM generates hypotheses ──► DuckDB validates each one
+    │
+    ▼
+Evidence Package ──► SQL proofs + calculation audit trail
+    │
+    ▼
+Recommendations + Decision Graph + What-If Simulator
+    │
+    ▼
+Next.js Dashboard (minimalist white/blue UI)
 ```
 
-**Golden rule:** The LLM decides *what* to analyze. It never decides *what the answer is numerically*.
+**Core design rule:** The LLM decides *what* to analyze. DuckDB + Python decide *what the numbers are*. Results are never surfaced unless they are mathematically verified.
+
+---
 
 ## Tech Stack
 
 | Layer | Technology |
-|-------|------------|
-| Frontend | Next.js, React, TypeScript, Tailwind CSS, shadcn/ui, Recharts, React Flow |
-| Backend | Python 3.12+, FastAPI, Pydantic, DuckDB |
-| AI | Gemini / Groq (configurable provider abstraction) |
-| Analysis | Pandas, NumPy, SciPy, DuckDB |
+|---|---|
+| **Frontend** | Next.js 16 (App Router), React 19, TypeScript 5, Tailwind CSS 4, Recharts 3, Lucide React |
+| **Backend** | Python 3.12+, FastAPI 0.115+, Pydantic v2, Uvicorn |
+| **Database** | DuckDB 1.0+ (in-process analytical engine) |
+| **Data Processing** | Pandas 2.2+, NumPy 1.26+, SciPy 1.13+ |
+| **AI / LLM** | Google Gemini (`gemini-2.0-flash`) via `google-genai` SDK — falls back to deterministic rule engine if no key is set |
+| **File Formats** | CSV, Excel (`.xlsx`, `.xls`, multi-sheet) |
+
+---
 
 ## Quick Start
 
 ### Prerequisites
 
-- Node.js 18+
-- Python 3.12+
-- npm
+- **Python 3.12+**
+- **Node.js 18+** and **npm**
+- A Google Gemini API key *(optional — fully functional without one using the deterministic fallback)*
 
-### Backend
+---
+
+### 1. Clone & Configure
+
+```bash
+git clone <repo-url>
+cd busiai
+cp .env.example .env
+# Open .env and add your GEMINI_API_KEY if you have one
+```
+
+---
+
+### 2. Backend
 
 ```bash
 cd backend
+
+# Create and activate virtual environment
 python -m venv venv
 
 # Windows
 .\venv\Scripts\activate
 
-# macOS/Linux
+# macOS / Linux
 source venv/bin/activate
 
+# Install dependencies
 pip install -r requirements.txt
+
+# Start the API server
 uvicorn app.main:app --reload --port 8000
 ```
 
-### Frontend
+Backend will be live at **http://localhost:8000**
+
+---
+
+### 3. Frontend
 
 ```bash
 cd frontend
@@ -60,60 +119,159 @@ npm install
 npm run dev
 ```
 
-### Environment
+Frontend will be live at **http://localhost:3000**
 
-```bash
-cp .env.example .env
-# Edit .env with your API keys
+---
+
+### 4. Verify
+
+| Endpoint | Expected |
+|---|---|
+| `http://localhost:3000` | Dashboard UI |
+| `http://localhost:8000/health` | `{"status": "healthy"}` |
+| `http://localhost:8000/docs` | FastAPI Swagger UI |
+
+On first load, the app automatically ingests a sample SaaS MRR dataset so you can explore all features immediately — no manual upload required.
+
+---
+
+## Environment Variables
+
+Copy `.env.example` to `.env` and configure:
+
+```env
+# LLM Provider (gemini | groq)
+LLM_PROVIDER=gemini
+LLM_MODEL=gemini-2.0-flash
+
+# API Keys — leave blank to use the deterministic fallback engine
+GEMINI_API_KEY=your_key_here
+GROQ_API_KEY=your_key_here
+
+# Frontend
+NEXT_PUBLIC_API_URL=http://localhost:8000
+
+# CORS (comma-separated)
+CORS_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
+
+# Storage
+UPLOAD_DIR=uploads
+MAX_FILE_SIZE_MB=50
+
+# Limits
+QUERY_TIMEOUT_SECONDS=30
+MAX_RESULT_ROWS=10000
 ```
 
-### Verify
+> **Note:** BusiAI works fully offline without any API key. The deterministic reasoning engine handles profiling, insights, and simulation automatically. The LLM layer is only used for free-form question answering in the Investigation Console.
 
-- Frontend: http://localhost:3000
-- Backend: http://localhost:8000
-- Health: http://localhost:8000/health
+---
+
+## API Reference
+
+Base URL: `http://localhost:8000/api/v1`
+
+| Method | Endpoint | Description |
+|---|---|---|
+| `GET` | `/datasets` | List all ingested datasets |
+| `POST` | `/datasets/upload` | Upload a CSV or Excel file |
+| `GET` | `/profile/{dataset_id}` | Statistical profile of a dataset |
+| `GET` | `/insights/{dataset_id}` | Auto-generated business insights |
+| `POST` | `/investigation/run` | Run an AI-powered investigation |
+| `POST` | `/graph/build` | Build a decision reasoning graph |
+| `POST` | `/simulation/run` | Run a What-If scenario simulation |
+| `POST` | `/analysis/query` | Execute a raw DuckDB SQL query |
+
+Full interactive docs available at `http://localhost:8000/docs`.
+
+---
 
 ## Project Structure
 
 ```
 busiai/
-├── frontend/          # Next.js application
-│   ├── app/           # App Router pages
-│   ├── components/    # React components
-│   ├── lib/           # Utilities
-│   ├── hooks/         # Custom hooks
-│   └── types/         # TypeScript types
-├── backend/           # FastAPI application
+├── frontend/                   # Next.js 16 App
 │   ├── app/
-│   │   ├── main.py    # Entry point
-│   │   ├── core/      # Config
-│   │   ├── ingestion/ # Data upload
-│   │   ├── profiling/ # Data profiling
-│   │   ├── analysis/  # Analysis operations
-│   │   ├── investigation/ # AI investigation
-│   │   ├── evidence/  # Evidence layer
-│   │   ├── simulation/ # What-If engine
-│   │   ├── recommendations/ # Action recommendations
-│   │   ├── graph/     # Decision graph
-│   │   └── llm/       # LLM provider abstraction
+│   │   ├── layout.tsx          # Root layout
+│   │   ├── page.tsx            # Main dashboard (tabs: overview/investigate/graph/simulator/profile/workbench)
+│   │   └── globals.css         # Design tokens + utility classes
+│   ├── components/
+│   │   ├── Navbar.tsx          # Top navigation + dataset switcher
+│   │   ├── DatasetUploader.tsx # File upload modal (drag-and-drop)
+│   │   ├── AutoInsightsDeck.tsx        # Insight cards with severity badges
+│   │   ├── AIInvestigationConsole.tsx  # Free-form question → evidence UI
+│   │   ├── EvidenceModal.tsx           # SQL proof + data inspector
+│   │   ├── DecisionGraphView.tsx       # Causal reasoning graph
+│   │   ├── WhatIfSimulator.tsx         # Scenario sliders + projection chart
+│   │   ├── DatasetProfileView.tsx      # Column stats explorer
+│   │   └── SQLWorkbench.tsx            # Raw DuckDB query runner
+│   └── lib/
+│       └── api.ts              # Typed API client (all backend calls)
+│
+├── backend/                    # FastAPI Application
+│   ├── app/
+│   │   ├── main.py             # App entry point + CORS middleware
+│   │   ├── core/
+│   │   │   ├── config.py       # Settings (pydantic-settings)
+│   │   │   └── database.py     # DuckDB connection manager
+│   │   ├── api/v1/router.py    # API route aggregator
+│   │   ├── ingestion/          # File parsing + DuckDB table registration
+│   │   ├── profiling/          # Column typing + statistical analysis
+│   │   ├── analysis/           # Auto-insights engine + SQL execution
+│   │   ├── investigation/      # Hypothesis generation + evidence assembly
+│   │   ├── evidence/           # Evidence item construction + SQL proof
+│   │   ├── simulation/         # What-If parametric model
+│   │   ├── recommendations/    # Action recommendation engine
+│   │   ├── graph/              # Decision graph builder
+│   │   ├── query/              # Safe DuckDB query execution
+│   │   └── llm/
+│   │       └── provider.py     # LLM abstraction (Gemini / Groq / Deterministic)
+│   ├── requirements.txt
 │   └── tests/
-├── sample_data/       # Demo datasets
-├── docs/              # Documentation
-├── PROJECT_SPEC.md    # Full specification
-└── PROJECT_STATUS.md  # Current build status
+│
+├── sample_data/
+│   ├── saas_monthly_metrics.csv    # SaaS MRR / churn / CAC / LTV demo data
+│   └── ecommerce_orders.csv        # E-commerce orders demo data
+│
+├── .env.example                # Environment variable template
+├── PROJECT_SPEC.md             # Full product specification
+└── PROJECT_STATUS.md           # Build phase tracker
 ```
+
+---
+
+## How It Works
+
+### Data Ingestion
+Upload a CSV or Excel file. The ingestion service sanitizes column names, infers data types, registers the data as a DuckDB in-memory table, and extracts metadata (row count, column count, sample values).
+
+### Auto Profiling
+The profiling service classifies every column as `numeric`, `categorical`, `datetime`, or `boolean`. It computes null rates, IQR-based outlier counts, cardinality ratios, top-value distributions, and identifies key metrics and dimensions automatically.
+
+### Auto Insights
+The insights engine runs a battery of deterministic SQL queries to find: period-over-period metric changes, Pareto concentration (top-N account for X%), segment divergence, anomalous spikes or drops, and data quality issues — all without requiring an API key.
+
+### AI Investigation
+When you ask a question, the LLM generates a set of hypotheses to test (e.g., *"August churn spike was driven by EMEA Starter plan"*). Each hypothesis is validated by executing a specific DuckDB query against your actual data. The result is confirmed, refuted, or marked inconclusive — with the SQL proof included.
+
+### What-If Simulation
+The simulation engine applies parametric multipliers (price elasticity −0.3 demand curve, churn lifetime value compounding, conversion rate linear scaling) to your dataset's baseline metric, then projects a 6-month forward curve with conservative (65%), base (100%), and optimistic (135%) scenario bounds.
+
+---
 
 ## Development Phases
 
-- [x] Phase 0 — Foundation
-- [x] Phase 1 — Ingestion + Profiling + Auto Insights
-- [x] Phase 2 — Deterministic Analysis Engine
-- [x] Phase 3 — AI Investigation + Evidence Layer
-- [x] Phase 4 — Recommendations + Decision Graph
-- [x] Phase 5 — What-If Simulation
-- [x] Phase 6 — Dashboard & UX
-- [x] Phase 7 — Reliability + Testing
-- [x] Phase 8 — Deployment + Demo
+- [x] **Phase 0** — Project scaffold (FastAPI + Next.js + DuckDB foundation)
+- [x] **Phase 1** — Data ingestion, profiling, auto-insights engine
+- [x] **Phase 2** — Deterministic analysis engine + SQL execution layer
+- [x] **Phase 3** — AI investigation console + evidence package
+- [x] **Phase 4** — Recommendations + decision graph
+- [x] **Phase 5** — What-If simulation engine
+- [x] **Phase 6** — Dashboard UI (minimalist white/blue theme)
+- [x] **Phase 7** — Reliability + error handling + LLM fallback
+- [x] **Phase 8** — Sample datasets + demo-ready defaults
+
+---
 
 ## License
 

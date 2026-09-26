@@ -7,8 +7,6 @@ import {
   RotateCcw,
   Sparkles,
   ShieldAlert,
-  HelpCircle,
-  CheckCircle2,
 } from "lucide-react";
 import {
   ResponsiveContainer,
@@ -74,20 +72,20 @@ export const WhatIfSimulator: React.FC<WhatIfSimulatorProps> = ({
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h2 className="text-lg font-bold text-white flex items-center space-x-2">
-            <Sliders className="h-5 w-5 text-cyan-400" />
+          <h2 className="text-base font-bold text-slate-900 flex items-center space-x-2">
+            <Sliders className="h-5 w-5 text-blue-600" />
             <span>Grounded What-If Simulator</span>
           </h2>
-          <p className="text-xs text-slate-400">
-            Simulate the impact of pricing, retention, and acquisition changes with statistical bounds.
+          <p className="text-xs text-slate-500">
+            Simulate the impact of pricing, retention, and acquisition changes with statistical confidence bounds.
           </p>
         </div>
 
         <button
           onClick={handleReset}
-          className="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-semibold text-slate-300 hover:text-white transition flex items-center space-x-1.5 cursor-pointer self-start"
+          className="px-3.5 py-1.5 rounded-lg bg-white hover:bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-700 transition flex items-center space-x-1.5 cursor-pointer self-start shadow-2xs"
         >
-          <RotateCcw className="h-3.5 w-3.5" />
+          <RotateCcw className="h-3.5 w-3.5 text-slate-500" />
           <span>Reset Levers</span>
         </button>
       </div>
@@ -95,17 +93,17 @@ export const WhatIfSimulator: React.FC<WhatIfSimulatorProps> = ({
       {/* Main Simulation Panel */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left: Interactive Control Sliders */}
-        <div className="glass-panel p-6 rounded-2xl border-slate-800 space-y-5 self-start">
-          <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center justify-between">
+        <div className="clean-card p-6 rounded-2xl space-y-5 self-start">
+          <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center justify-between">
             <span>Scenario Levers</span>
-            <span className="text-cyan-400 font-normal">Target: {targetMetric}</span>
+            <span className="text-blue-600 font-semibold lowercase">Target: {targetMetric}</span>
           </h3>
 
           {/* Slider 1: Price Change */}
-          <div className="space-y-2">
+          <div className="space-y-1.5">
             <div className="flex items-center justify-between text-xs">
-              <span className="text-slate-300 font-medium">Price Adjustment</span>
-              <span className={`font-mono font-bold ${priceChange >= 0 ? "text-cyan-400" : "text-rose-400"}`}>
+              <span className="text-slate-700 font-medium">Price Adjustment</span>
+              <span className={`font-mono font-bold ${priceChange >= 0 ? "text-blue-600" : "text-rose-600"}`}>
                 {priceChange > 0 ? `+${priceChange}%` : `${priceChange}%`}
               </span>
             </div>
@@ -116,9 +114,9 @@ export const WhatIfSimulator: React.FC<WhatIfSimulatorProps> = ({
               step="5"
               value={priceChange}
               onChange={(e) => setPriceChange(Number(e.target.value))}
-              className="w-full accent-cyan-400 cursor-pointer"
+              className="w-full accent-blue-600 cursor-pointer"
             />
-            <div className="flex justify-between text-[10px] text-slate-500 font-mono">
+            <div className="flex justify-between text-[10px] text-slate-400 font-mono">
               <span>-30%</span>
               <span>0%</span>
               <span>+50%</span>
@@ -126,10 +124,10 @@ export const WhatIfSimulator: React.FC<WhatIfSimulatorProps> = ({
           </div>
 
           {/* Slider 2: Churn Reduction */}
-          <div className="space-y-2">
+          <div className="space-y-1.5">
             <div className="flex items-center justify-between text-xs">
-              <span className="text-slate-300 font-medium">Churn Reduction</span>
-              <span className="font-mono font-bold text-emerald-400">+{churnReduction}%</span>
+              <span className="text-slate-700 font-medium">Churn Reduction</span>
+              <span className="font-mono font-bold text-emerald-600">+{churnReduction}%</span>
             </div>
             <input
               type="range"
@@ -138,9 +136,9 @@ export const WhatIfSimulator: React.FC<WhatIfSimulatorProps> = ({
               step="5"
               value={churnReduction}
               onChange={(e) => setChurnReduction(Number(e.target.value))}
-              className="w-full accent-emerald-400 cursor-pointer"
+              className="w-full accent-emerald-600 cursor-pointer"
             />
-            <div className="flex justify-between text-[10px] text-slate-500 font-mono">
+            <div className="flex justify-between text-[10px] text-slate-400 font-mono">
               <span>0%</span>
               <span>20%</span>
               <span>40%</span>
@@ -148,10 +146,10 @@ export const WhatIfSimulator: React.FC<WhatIfSimulatorProps> = ({
           </div>
 
           {/* Slider 3: Conversion Boost */}
-          <div className="space-y-2">
+          <div className="space-y-1.5">
             <div className="flex items-center justify-between text-xs">
-              <span className="text-slate-300 font-medium">Conversion Lift</span>
-              <span className="font-mono font-bold text-indigo-400">+{conversionBoost}%</span>
+              <span className="text-slate-700 font-medium">Conversion Lift</span>
+              <span className="font-mono font-bold text-blue-600">+{conversionBoost}%</span>
             </div>
             <input
               type="range"
@@ -160,19 +158,19 @@ export const WhatIfSimulator: React.FC<WhatIfSimulatorProps> = ({
               step="2"
               value={conversionBoost}
               onChange={(e) => setConversionBoost(Number(e.target.value))}
-              className="w-full accent-indigo-400 cursor-pointer"
+              className="w-full accent-blue-600 cursor-pointer"
             />
-            <div className="flex justify-between text-[10px] text-slate-500 font-mono">
+            <div className="flex justify-between text-[10px] text-slate-400 font-mono">
               <span>0%</span>
               <span>15%</span>
               <span>30%</span>
             </div>
           </div>
 
-          <div className="p-3 rounded-xl bg-slate-950/60 border border-slate-800 text-[11px] text-slate-400 space-y-1">
-            <div className="flex items-center space-x-1 text-slate-300 font-bold">
-              <ShieldAlert className="h-3.5 w-3.5 text-amber-400" />
-              <span>Grounded Model Assumptions:</span>
+          <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 text-[11px] text-slate-600 space-y-1">
+            <div className="flex items-center space-x-1.5 text-slate-800 font-bold">
+              <ShieldAlert className="h-3.5 w-3.5 text-amber-600" />
+              <span>Model Assumptions:</span>
             </div>
             <p>Calculates demand price elasticity curve (-0.3) and compounding retention lifetime value.</p>
           </div>
@@ -184,23 +182,23 @@ export const WhatIfSimulator: React.FC<WhatIfSimulatorProps> = ({
             <>
               {/* High-level KPI Summary */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
-                <div className="glass-panel p-4 rounded-xl border-slate-800">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase">Baseline Aggregate</span>
-                  <div className="text-lg font-extrabold text-white mt-1 font-mono">
+                <div className="clean-card p-4 rounded-xl">
+                  <span className="text-[10px] font-bold text-slate-500 uppercase">Baseline Value</span>
+                  <div className="text-lg font-bold text-slate-900 mt-1 font-mono">
                     ${result.baseline_value.toLocaleString()}
                   </div>
                 </div>
 
-                <div className="glass-panel p-4 rounded-xl border-indigo-500/40 bg-indigo-950/20">
-                  <span className="text-[10px] font-bold text-cyan-300 uppercase">Projected Output</span>
-                  <div className="text-lg font-extrabold text-cyan-400 mt-1 font-mono">
+                <div className="clean-card p-4 rounded-xl border-blue-200 bg-blue-50/40">
+                  <span className="text-[10px] font-bold text-blue-700 uppercase">Projected Output</span>
+                  <div className="text-lg font-bold text-blue-700 mt-1 font-mono">
                     ${result.projected_value.toLocaleString()}
                   </div>
                 </div>
 
-                <div className="glass-panel p-4 rounded-xl border-emerald-500/40 bg-emerald-950/20">
-                  <span className="text-[10px] font-bold text-emerald-300 uppercase">Net Variance</span>
-                  <div className="text-lg font-extrabold text-emerald-400 mt-1 font-mono">
+                <div className="clean-card p-4 rounded-xl border-emerald-200 bg-emerald-50/40">
+                  <span className="text-[10px] font-bold text-emerald-800 uppercase">Net Variance</span>
+                  <div className="text-lg font-bold text-emerald-700 mt-1 font-mono">
                     {result.net_delta >= 0 ? `+$${result.net_delta.toLocaleString()}` : `-$${Math.abs(result.net_delta).toLocaleString()}`}
                     <span className="text-xs font-semibold ml-1.5">({result.net_delta_pct > 0 ? `+${result.net_delta_pct}%` : `${result.net_delta_pct}%`})</span>
                   </div>
@@ -208,47 +206,47 @@ export const WhatIfSimulator: React.FC<WhatIfSimulatorProps> = ({
               </div>
 
               {/* 6-Month Projection Area Chart */}
-              <div className="glass-panel p-5 rounded-2xl border-slate-800 space-y-3">
+              <div className="clean-card p-5 rounded-2xl space-y-3">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-xs font-bold text-white uppercase tracking-wider flex items-center space-x-2">
-                    <TrendingUp className="h-4 w-4 text-cyan-400" />
+                  <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center space-x-2">
+                    <TrendingUp className="h-4 w-4 text-blue-600" />
                     <span>6-Month Forward Projection Curve</span>
                   </h3>
-                  <span className="text-[11px] font-semibold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+                  <span className="text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
                     {result.confidence_score}% Statistical Confidence
                   </span>
                 </div>
 
-                <div className="h-64 w-full pt-2">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={result.timeline_curve}>
+                <ResponsiveContainer width="100%" height={240}>
+                    <AreaChart data={result.timeline_curve} margin={{ top: 4, right: 8, left: 8, bottom: 0 }}>
                       <defs>
-                        <linearGradient id="colorOptimistic" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#10b981" stopOpacity={0.4} />
+                        <linearGradient id="wif-colorOptimistic" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#10b981" stopOpacity={0.2} />
                           <stop offset="95%" stopColor="#10b981" stopOpacity={0.0} />
                         </linearGradient>
-                        <linearGradient id="colorBase" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#06b6d4" stopOpacity={0.5} />
-                          <stop offset="95%" stopColor="#06b6d4" stopOpacity={0.0} />
+                        <linearGradient id="wif-colorBase" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#2563eb" stopOpacity={0.25} />
+                          <stop offset="95%" stopColor="#2563eb" stopOpacity={0.0} />
                         </linearGradient>
                       </defs>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                      <XAxis dataKey="month" stroke="#64748b" fontSize={11} />
-                      <YAxis stroke="#64748b" fontSize={11} tickFormatter={(v) => `$${v.toLocaleString()}`} />
+                      <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                      <XAxis dataKey="month" stroke="#94a3b8" fontSize={11} />
+                      <YAxis stroke="#94a3b8" fontSize={11} tickFormatter={(v) => `$${(v as number).toLocaleString()}`} />
                       <Tooltip
                         contentStyle={{
-                          backgroundColor: "#0f172a",
-                          borderColor: "#334155",
-                          borderRadius: "0.75rem",
-                          color: "#f8fafc",
+                          backgroundColor: "#ffffff",
+                          borderColor: "#e2e8f0",
+                          borderRadius: "0.5rem",
+                          color: "#0f172a",
                           fontSize: "12px",
+                          boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
                         }}
                       />
                       <Legend wrapperStyle={{ fontSize: "11px", paddingTop: "8px" }} />
                       <Area
                         type="monotone"
                         dataKey="baseline"
-                        stroke="#64748b"
+                        stroke="#94a3b8"
                         strokeDasharray="4 4"
                         fill="none"
                         name="Baseline (Status Quo)"
@@ -256,22 +254,23 @@ export const WhatIfSimulator: React.FC<WhatIfSimulatorProps> = ({
                       <Area
                         type="monotone"
                         dataKey="projected_base"
-                        stroke="#06b6d4"
+                        stroke="#2563eb"
+                        strokeWidth={2}
                         fillOpacity={1}
-                        fill="url(#colorBase)"
+                        fill="url(#wif-colorBase)"
                         name="Expected Base Case"
                       />
                       <Area
                         type="monotone"
                         dataKey="projected_optimistic"
                         stroke="#10b981"
+                        strokeWidth={2}
                         fillOpacity={1}
-                        fill="url(#colorOptimistic)"
+                        fill="url(#wif-colorOptimistic)"
                         name="Optimistic Upside"
                       />
                     </AreaChart>
                   </ResponsiveContainer>
-                </div>
               </div>
 
               {/* Three Scenarios Breakdown */}
@@ -279,18 +278,18 @@ export const WhatIfSimulator: React.FC<WhatIfSimulatorProps> = ({
                 {result.scenarios.map((sc, i) => (
                   <div
                     key={i}
-                    className="glass-panel p-4 rounded-xl border border-slate-800 space-y-1.5"
+                    className="clean-card p-4 rounded-xl space-y-1.5"
                   >
-                    <span className="text-[10px] font-extrabold uppercase text-indigo-400">
+                    <span className="text-[10px] font-bold uppercase text-blue-700">
                       {sc.name.replace("_", " ")}
                     </span>
-                    <div className="text-base font-bold text-white font-mono">
+                    <div className="text-base font-bold text-slate-900 font-mono">
                       ${sc.projected_value.toLocaleString()}
                     </div>
-                    <div className="text-xs font-bold text-emerald-400 font-mono">
+                    <div className="text-xs font-bold text-emerald-700 font-mono">
                       {sc.delta_value >= 0 ? `+$${sc.delta_value.toLocaleString()}` : `-$${Math.abs(sc.delta_value).toLocaleString()}`} ({sc.delta_percentage > 0 ? `+${sc.delta_percentage}%` : `${sc.delta_percentage}%`})
                     </div>
-                    <p className="text-[11px] text-slate-400 leading-snug pt-1">{sc.description}</p>
+                    <p className="text-[11px] text-slate-500 leading-snug pt-1">{sc.description}</p>
                   </div>
                 ))}
               </div>

@@ -1,23 +1,26 @@
 @import "tailwindcss";
 
 :root {
-  --background: #090d16;
-  --foreground: #f1f5f9;
-  --card: #0f172a;
-  --card-border: #1e293b;
-  --accent-cyan: #06b6d4;
-  --accent-blue: #3b82f6;
-  --accent-indigo: #6366f1;
-  --accent-emerald: #10b981;
-  --accent-amber: #f59e0b;
-  --accent-rose: #f43f5e;
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --card-border: #e2e8f0;
+  --card-hover: #f1f5f9;
+  --primary-blue: #2563eb;
+  --primary-blue-hover: #1d4ed8;
+  --primary-blue-light: #eff6ff;
+  --navy: #0f172a;
+  --slate-muted: #64748b;
+  --slate-subtle: #94a3b8;
 }
 
 body {
   background-color: var(--background);
   color: var(--foreground);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Custom Scrollbars */
@@ -26,58 +29,53 @@ body {
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #090d16;
+  background: #f1f5f9;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
+  background: #cbd5e1;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: #94a3b8;
 }
 
-/* Glassmorphic Effects */
-.glass-panel {
-  background: rgba(15, 23, 42, 0.75);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+/* Minimalist Clean Card Styles */
+.clean-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.04), 0 1px 2px -1px rgba(15, 23, 42, 0.04);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-.glass-panel-glow {
-  background: rgba(15, 23, 42, 0.85);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(99, 102, 241, 0.25);
-  box-shadow: 0 0 25px -5px rgba(99, 102, 241, 0.15);
+.clean-card-hover:hover {
+  border-color: #93c5fd;
+  box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.06), 0 2px 4px -2px rgba(37, 99, 235, 0.06);
 }
 
-.glass-card-hover {
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+/* Primary Button */
+.btn-primary {
+  background-color: #2563eb;
+  color: #ffffff;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  transition: background-color 0.15s ease, box-shadow 0.15s ease;
 }
-.glass-card-hover:hover {
-  transform: translateY(-2px);
-  border-color: rgba(99, 102, 241, 0.4);
-  box-shadow: 0 12px 24px -6px rgba(0, 0, 0, 0.5), 0 0 16px -2px rgba(99, 102, 241, 0.2);
-}
-
-/* Gradient text */
-.gradient-text {
-  background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.btn-primary:hover {
+  background-color: #1d4ed8;
+  box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
 }
 
-.gradient-text-emerald {
-  background: linear-gradient(135deg, #34d399 0%, #06b6d4 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+/* Secondary Button */
+.btn-secondary {
+  background-color: #ffffff;
+  color: #334155;
+  border: 1px solid #e2e8f0;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
 }
-
-/* Shimmer animation */
-@keyframes pulse-slow {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
-}
-
-.animate-pulse-slow {
-  animation: pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+.btn-secondary:hover {
+  background-color: #f8fafc;
+  border-color: #cbd5e1;
+  color: #0f172a;
 }

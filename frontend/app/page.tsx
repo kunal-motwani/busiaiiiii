@@ -6,14 +6,7 @@ import {
   Sparkles,
   Database,
   Search,
-  Network,
   Sliders,
-  Terminal,
-  Upload,
-  Layers,
-  ArrowRight,
-  TrendingDown,
-  TrendingUp,
 } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { DatasetUploader } from "@/components/DatasetUploader";
@@ -79,7 +72,6 @@ export default function HomePage() {
     try {
       let list = await listDatasets();
       if (list.length === 0) {
-        // Auto-bootstrap sample dataset so user has immediate data
         const sample = await uploadSampleCsv(
           "saas_monthly_metrics.csv",
           SAMPLE_SAAS_DEFAULT,
@@ -122,7 +114,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#090d16] text-slate-100 flex flex-col font-sans selection:bg-indigo-500 selection:text-white">
+    <div className="min-h-screen bg-[#f8fafc] text-slate-900 flex flex-col font-sans selection:bg-blue-100 selection:text-blue-900">
       {/* Top Navigation */}
       <Navbar
         activeTab={activeTab}
@@ -140,32 +132,31 @@ export default function HomePage() {
             {activeTab === "overview" && (
               <div className="space-y-6 animate-fade-in">
                 {/* Hero Banner */}
-                <div className="glass-panel p-6 sm:p-8 rounded-3xl border-indigo-500/20 relative overflow-hidden">
-                  <div className="absolute right-0 top-0 -mt-8 -mr-8 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
-                  <div className="max-w-2xl space-y-3 relative z-10">
-                    <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-xs font-semibold">
-                      <Sparkles className="h-3.5 w-3.5 text-cyan-400" />
-                      <span>Evidence-First AI Business Engine</span>
+                <div className="clean-card p-6 sm:p-7 rounded-2xl border-slate-200 relative overflow-hidden bg-gradient-to-r from-blue-50/60 via-white to-slate-50">
+                  <div className="max-w-2xl space-y-2.5">
+                    <div className="inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-md bg-blue-100/70 border border-blue-200 text-blue-800 text-[11px] font-semibold">
+                      <Sparkles className="h-3 w-3 text-blue-600" />
+                      <span>Evidence-First Business Decision Engine</span>
                     </div>
-                    <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
-                      Find what changed. <span className="gradient-text">Prove it with data.</span>
+                    <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+                      From data to decisions. <span className="text-blue-600">With proof.</span>
                     </h1>
-                    <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal">
-                      BusiAI connects automated anomaly detection, DuckDB deterministic SQL, and grounded what-if simulations to give business decisions backed by mathematical proof.
+                    <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
+                      BusiAI investigates plausible drivers, verifies every number against DuckDB, and projects grounded what-if business scenarios.
                     </p>
-                    <div className="pt-2 flex flex-wrap items-center gap-3">
+                    <div className="pt-2 flex flex-wrap items-center gap-2.5">
                       <button
                         onClick={() => setActiveTab("investigate")}
-                        className="px-4 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-cyan-600 hover:from-indigo-500 hover:to-cyan-500 text-white text-xs font-bold transition shadow-lg shadow-indigo-500/20 flex items-center space-x-2 cursor-pointer"
+                        className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold transition shadow-xs flex items-center space-x-1.5 cursor-pointer"
                       >
                         <Search className="h-3.5 w-3.5" />
                         <span>Ask AI Question</span>
                       </button>
                       <button
                         onClick={() => setActiveTab("simulator")}
-                        className="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-white text-xs font-semibold transition flex items-center space-x-2 cursor-pointer"
+                        className="px-4 py-2 rounded-lg bg-white hover:bg-slate-50 border border-slate-300 text-slate-700 text-xs font-semibold transition flex items-center space-x-1.5 cursor-pointer shadow-2xs"
                       >
-                        <Sliders className="h-3.5 w-3.5 text-cyan-400" />
+                        <Sliders className="h-3.5 w-3.5 text-blue-600" />
                         <span>Explore What-If Scenarios</span>
                       </button>
                     </div>
@@ -211,15 +202,15 @@ export default function HomePage() {
             )}
           </>
         ) : (
-          <div className="text-center py-24 glass-panel rounded-3xl p-8 max-w-lg mx-auto space-y-4">
-            <Database className="h-12 w-12 text-indigo-400 mx-auto" />
-            <h2 className="text-xl font-bold text-white">No Dataset Ingested Yet</h2>
-            <p className="text-xs text-slate-400">
+          <div className="text-center py-24 clean-card rounded-2xl p-8 max-w-lg mx-auto space-y-3">
+            <Database className="h-10 w-10 text-blue-600 mx-auto" />
+            <h2 className="text-lg font-bold text-slate-900">No Dataset Ingested Yet</h2>
+            <p className="text-xs text-slate-500">
               Upload a business dataset or click below to launch the SaaS Growth demo dataset.
             </p>
             <button
               onClick={() => setIsUploadModalOpen(true)}
-              className="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition cursor-pointer shadow-lg shadow-indigo-600/20"
+              className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold transition cursor-pointer shadow-xs"
             >
               Upload / Select Dataset
             </button>
@@ -244,7 +235,7 @@ export default function HomePage() {
       />
 
       {/* Footer */}
-      <footer className="border-t border-slate-900 bg-slate-950/80 py-4 text-center text-[11px] text-slate-500">
+      <footer className="border-t border-slate-200 bg-white py-4 text-center text-[11px] text-slate-500 font-medium">
         BusiAI &mdash; AI Decision Engine for Business Data &bull; Powered by DuckDB &amp; FastAPI &bull; From data to decisions. With proof.
       </footer>
     </div>

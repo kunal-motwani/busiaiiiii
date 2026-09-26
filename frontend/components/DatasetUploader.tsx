@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Upload, FileSpreadsheet, Sparkles, CheckCircle2, AlertCircle, X, ArrowRight } from "lucide-react";
+import { Upload, FileSpreadsheet, Sparkles, AlertCircle, X, ArrowRight } from "lucide-react";
 import { uploadDataset, uploadSampleCsv, DatasetInfo } from "@/lib/api";
 
 interface DatasetUploaderProps {
@@ -111,35 +111,35 @@ export const DatasetUploader: React.FC<DatasetUploaderProps> = ({ isOpen, onClos
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md animate-fade-in">
-      <div className="relative w-full max-w-xl glass-panel-glow rounded-2xl p-6 shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-fade-in">
+      <div className="relative w-full max-w-xl bg-white rounded-2xl p-6 shadow-2xl border border-slate-200">
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer"
+          className="absolute top-4 right-4 p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition cursor-pointer"
         >
           <X className="h-5 w-5" />
         </button>
 
         <div className="text-center mb-6">
-          <div className="inline-flex items-center justify-center h-12 w-12 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-cyan-400 mb-3">
+          <div className="inline-flex items-center justify-center h-12 w-12 rounded-xl bg-blue-50 border border-blue-100 text-blue-600 mb-2">
             <Upload className="h-6 w-6" />
           </div>
-          <h2 className="text-xl font-bold text-white">Ingest Business Data</h2>
-          <p className="text-xs text-slate-400 mt-1">Upload CSV or Excel files for deterministic AI investigation.</p>
+          <h2 className="text-lg font-bold text-slate-900">Ingest Business Data</h2>
+          <p className="text-xs text-slate-500 mt-0.5">Upload CSV or Excel files for deterministic AI investigation.</p>
         </div>
 
         {error && (
-          <div className="mb-4 p-3 rounded-lg bg-rose-500/10 border border-rose-500/30 flex items-center space-x-2 text-rose-400 text-xs">
+          <div className="mb-4 p-3 rounded-lg bg-rose-50 border border-rose-200 flex items-center space-x-2 text-rose-700 text-xs">
             <AlertCircle className="h-4 w-4 shrink-0" />
             <span>{error}</span>
           </div>
         )}
 
         {/* Dropzone */}
-        <label className="relative flex flex-col items-center justify-center p-8 border-2 border-dashed border-slate-700 hover:border-indigo-500 rounded-xl bg-slate-900/50 hover:bg-slate-900/80 transition cursor-pointer group">
-          <FileSpreadsheet className="h-10 w-10 text-slate-500 group-hover:text-cyan-400 transition mb-2" />
-          <span className="text-xs font-semibold text-slate-200">
+        <label className="relative flex flex-col items-center justify-center p-8 border-2 border-dashed border-slate-300 hover:border-blue-500 rounded-xl bg-slate-50 hover:bg-blue-50/40 transition cursor-pointer group">
+          <FileSpreadsheet className="h-9 w-9 text-slate-400 group-hover:text-blue-600 transition mb-2" />
+          <span className="text-xs font-semibold text-slate-800">
             {isUploading ? "Ingesting & Profiling Dataset..." : "Click or drag CSV / Excel file here"}
           </span>
           <span className="text-[11px] text-slate-500 mt-1">Supports .csv, .xlsx, .xls, .parquet up to 50MB</span>
@@ -153,10 +153,10 @@ export const DatasetUploader: React.FC<DatasetUploaderProps> = ({ isOpen, onClos
         </label>
 
         {/* 1-Click Sample Loaders */}
-        <div className="mt-6 pt-5 border-t border-slate-800">
+        <div className="mt-6 pt-5 border-t border-slate-100">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-semibold text-slate-400 flex items-center space-x-1.5">
-              <Sparkles className="h-3.5 w-3.5 text-cyan-400" />
+            <span className="text-xs font-semibold text-slate-600 flex items-center space-x-1.5">
+              <Sparkles className="h-3.5 w-3.5 text-blue-600" />
               <span>Or test with pre-built business datasets:</span>
             </span>
           </div>
@@ -165,25 +165,25 @@ export const DatasetUploader: React.FC<DatasetUploaderProps> = ({ isOpen, onClos
             <button
               onClick={() => handleLoadSample("saas")}
               disabled={isUploading}
-              className="flex items-center justify-between p-3 rounded-xl bg-slate-900/90 border border-slate-800 hover:border-indigo-500/50 text-left transition group cursor-pointer"
+              className="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-200 hover:border-blue-300 hover:bg-blue-50/40 text-left transition group cursor-pointer"
             >
               <div>
-                <div className="text-xs font-bold text-white group-hover:text-cyan-300">SaaS Metrics Demo</div>
-                <div className="text-[10px] text-slate-400 mt-0.5">MRR, ARR, Churn rate, CAC, LTV</div>
+                <div className="text-xs font-bold text-slate-900 group-hover:text-blue-700">SaaS Metrics Demo</div>
+                <div className="text-[10px] text-slate-500 mt-0.5">MRR, ARR, Churn rate, CAC, LTV</div>
               </div>
-              <ArrowRight className="h-4 w-4 text-slate-500 group-hover:text-cyan-400 group-hover:translate-x-0.5 transition" />
+              <ArrowRight className="h-4 w-4 text-slate-400 group-hover:text-blue-600 group-hover:translate-x-0.5 transition" />
             </button>
 
             <button
               onClick={() => handleLoadSample("ecommerce")}
               disabled={isUploading}
-              className="flex items-center justify-between p-3 rounded-xl bg-slate-900/90 border border-slate-800 hover:border-indigo-500/50 text-left transition group cursor-pointer"
+              className="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-200 hover:border-blue-300 hover:bg-blue-50/40 text-left transition group cursor-pointer"
             >
               <div>
-                <div className="text-xs font-bold text-white group-hover:text-cyan-300">E-Commerce Orders</div>
-                <div className="text-[10px] text-slate-400 mt-0.5">Sales, Profit, Discounts, Categories</div>
+                <div className="text-xs font-bold text-slate-900 group-hover:text-blue-700">E-Commerce Orders</div>
+                <div className="text-[10px] text-slate-500 mt-0.5">Sales, Profit, Discounts, Categories</div>
               </div>
-              <ArrowRight className="h-4 w-4 text-slate-500 group-hover:text-cyan-400 group-hover:translate-x-0.5 transition" />
+              <ArrowRight className="h-4 w-4 text-slate-400 group-hover:text-blue-600 group-hover:translate-x-0.5 transition" />
             </button>
           </div>
         </div>

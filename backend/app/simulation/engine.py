@@ -22,8 +22,16 @@ class SimulationEngine:
         profile = profiling_service.profile_dataset(dataset)
         table = dataset.table_name
 
-        target_metric = req.target_metric or (profile.key_metrics[0] if profile.key_metrics else "metric")
-        baseline_val = float(db_manager.execute_scalar(f'SELECT SUM("{target_metric}") FROM "{table}"') or 0.0)
+        # Validate and resolve target metric
+        valid_cols = [c.name for c in dataset.columns]
+        target_metric = req.target_metric if req.target_metric and req.target_metric in valid_cols else None
+        if not target_metric:
+            target_metric = profile.key_metrics[0] if profile.key_metrics else (valid_cols[0] if valid_cols else "metric")
+
+        try:
+            baseline_val = float(db_manager.execute_scalar(f'SELECT SUM("{target_metric}") FROM "{table}"') or 0.0)
+        except Exception:
+            baseline_val = 0.0
 
         # Elasticity and multiplier calculations
         price_factor = 1.0 + (req.price_change_pct / 100.0)
