@@ -233,9 +233,7 @@ busiai/
 │   ├── saas_monthly_metrics.csv    # SaaS MRR / churn / CAC / LTV demo data
 │   └── ecommerce_orders.csv        # E-commerce orders demo data
 │
-├── .env.example                # Environment variable template
-├── PROJECT_SPEC.md             # Full product specification
-└── PROJECT_STATUS.md           # Build phase tracker
+└── .env.example                # Environment variable template
 ```
 
 ---
@@ -259,17 +257,20 @@ The simulation engine applies parametric multipliers (price elasticity −0.3 de
 
 ---
 
-## Development Phases
+## What's Next
 
-- [x] **Phase 0** — Project scaffold (FastAPI + Next.js + DuckDB foundation)
-- [x] **Phase 1** — Data ingestion, profiling, auto-insights engine
-- [x] **Phase 2** — Deterministic analysis engine + SQL execution layer
-- [x] **Phase 3** — AI investigation console + evidence package
-- [x] **Phase 4** — Recommendations + decision graph
-- [x] **Phase 5** — What-If simulation engine
-- [x] **Phase 6** — Dashboard UI (minimalist white/blue theme)
-- [x] **Phase 7** — Reliability + error handling + LLM fallback
-- [x] **Phase 8** — Sample datasets + demo-ready defaults
+While BusiAI currently provides robust in-memory analysis for CSV and Excel files, here are the key features planned for future releases:
+
+* **Live Data Warehouse Connectors:** Direct, read-only integration with PostgreSQL, BigQuery, and Snowflake so teams can query live production data without exporting files.
+* **Automated Anomaly Alerts:** Scheduled background scans that notify teams via Slack or email when core metrics deviate beyond historical bounds.
+* **Executive PDF & Slide Deck Export:** One-click exports of investigation summaries, decision graphs, and simulation scenarios for leadership presentations.
+* **Multi-Table Relational Analysis:** Automated join detection to investigate complex business models spanning multiple related tables.
+
+---
+
+## Contributing
+
+Contributions, bug reports, and feature requests are welcome! Feel free to open an issue or submit a pull request.
 
 ---
 

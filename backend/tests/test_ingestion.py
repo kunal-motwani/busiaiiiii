@@ -1,4 +1,4 @@
-"""Unit and integration tests for Phase 1 (Ingestion, Profiling, Insights, and API endpoints)."""
+"""Unit and integration tests for dataset ingestion, profiling, and insights."""
 import io
 import pytest
 from fastapi.testclient import TestClient

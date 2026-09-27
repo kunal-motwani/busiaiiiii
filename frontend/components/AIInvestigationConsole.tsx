@@ -21,7 +21,7 @@ interface AIInvestigationConsoleProps {
   datasetId: string;
   onOpenEvidence: (ev: EvidenceItem) => void;
   onNavigateToSimulator: () => void;
-  onNavigateToGraph: () => void;
+  onNavigateToGraph: (question?: string) => void;
   prefillQuestion?: string;
 }
 
@@ -171,7 +171,7 @@ export const AIInvestigationConsole: React.FC<AIInvestigationConsoleProps> = ({
               </div>
               <div className="flex items-center space-x-2">
                 <button
-                  onClick={onNavigateToGraph}
+                  onClick={() => onNavigateToGraph(result?.question || question)}
                   className="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 border border-slate-200 text-xs font-semibold text-slate-700 transition flex items-center space-x-1.5 cursor-pointer"
                 >
                   <Layers className="h-3.5 w-3.5 text-blue-600" />

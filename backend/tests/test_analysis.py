@@ -1,4 +1,4 @@
-"""Comprehensive end-to-end test suite for BusiAI backend engines."""
+"""Integration tests for business analysis, period comparisons, and simulations."""
 import io
 import pytest
 from fastapi.testclient import TestClient

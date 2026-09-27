@@ -22,7 +22,7 @@ interface DecisionGraphViewProps {
 
 export const DecisionGraphView: React.FC<DecisionGraphViewProps> = ({
   datasetId,
-  defaultQuestion = "Why did revenue fall in August 2025?",
+  defaultQuestion = "What drove the primary variance in performance?",
   onSelectSimulation,
 }) => {
   const [question, setQuestion] = useState(defaultQuestion);
@@ -31,10 +31,11 @@ export const DecisionGraphView: React.FC<DecisionGraphViewProps> = ({
   const [selectedNode, setSelectedNode] = useState<any | null>(null);
 
   const loadGraph = async (qText?: string) => {
-    if (!datasetId) return;
+    const q = (qText !== undefined ? qText : question).trim();
+    if (!datasetId || !q) return;
     setIsLoading(true);
     try {
-      const data = await buildDecisionGraph(datasetId, qText || question);
+      const data = await buildDecisionGraph(datasetId, q);
       setGraphData(data);
     } catch (err) {
       console.error(err);
@@ -44,8 +45,13 @@ export const DecisionGraphView: React.FC<DecisionGraphViewProps> = ({
   };
 
   useEffect(() => {
-    loadGraph();
-  }, [datasetId]);
+    if (defaultQuestion) {
+      setQuestion(defaultQuestion);
+      loadGraph(defaultQuestion);
+    } else {
+      loadGraph();
+    }
+  }, [datasetId, defaultQuestion]);
 
   return (
     <div className="space-y-6">
@@ -69,6 +75,44 @@ export const DecisionGraphView: React.FC<DecisionGraphViewProps> = ({
           <span>Regenerate Graph</span>
         </button>
       </div>
+
+      {/* Interactive Question Search Bar */}
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          loadGraph();
+        }}
+        className="relative flex items-center"
+      >
+        <div className="absolute left-4 text-slate-400">
+          <Search className="h-4 w-4 text-slate-400" />
+        </div>
+        <input
+          type="text"
+          value={question}
+          onChange={(e) => setQuestion(e.target.value)}
+          placeholder="Ask any question to build a custom decision graph..."
+          disabled={isLoading}
+          className="w-full bg-white border border-slate-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-100 rounded-xl py-2.5 pl-11 pr-32 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none transition shadow-xs"
+        />
+        <button
+          type="submit"
+          disabled={isLoading || !question.trim()}
+          className="absolute right-1.5 px-3.5 py-1.5 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white text-xs font-semibold rounded-lg transition cursor-pointer flex items-center space-x-1.5"
+        >
+          {isLoading ? (
+            <>
+              <div className="h-3.5 w-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              <span>Building...</span>
+            </>
+          ) : (
+            <>
+              <Sparkles className="h-3.5 w-3.5" />
+              <span>Build Graph</span>
+            </>
+          )}
+        </button>
+      </form>
 
       {isLoading && (
         <div className="clean-card p-12 rounded-2xl text-center animate-pulse">

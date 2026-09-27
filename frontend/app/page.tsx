@@ -67,6 +67,22 @@ export default function HomePage() {
   const [isUploadModalOpen, setIsUploadModalOpen] = useState<boolean>(false);
   const [selectedEvidence, setSelectedEvidence] = useState<EvidenceItem | null>(null);
   const [prefillQuestion, setPrefillQuestion] = useState<string>("");
+  const [activeQuestion, setActiveQuestion] = useState<string>("");
+
+  const getDatasetDefaultQuestion = (dataset: DatasetInfo | null) => {
+    if (!dataset) return "What drove the primary variance in performance?";
+    const cols = (dataset.columns || []).map((c) => c.name.toLowerCase());
+    if (cols.includes("mrr") || cols.includes("churn_rate")) {
+      return "Why did MRR drop in August 2025?";
+    }
+    if (cols.includes("revenue") || cols.includes("sales")) {
+      return "What drove revenue variance across categories?";
+    }
+    if (cols.includes("profit")) {
+      return "Which segment has the lowest profit margin?";
+    }
+    return "What drove the primary variance in performance?";
+  };
 
   const refreshDatasets = async () => {
     try {
@@ -110,6 +126,7 @@ export default function HomePage() {
 
   const handleInvestigateInsight = (q: string) => {
     setPrefillQuestion(q);
+    setActiveQuestion(q);
     setActiveTab("investigate");
   };
 
@@ -177,7 +194,10 @@ export default function HomePage() {
                 datasetId={selectedDataset.id}
                 onOpenEvidence={(ev) => setSelectedEvidence(ev)}
                 onNavigateToSimulator={() => setActiveTab("simulator")}
-                onNavigateToGraph={() => setActiveTab("graph")}
+                onNavigateToGraph={(q) => {
+                  if (q) setActiveQuestion(q);
+                  setActiveTab("graph");
+                }}
                 prefillQuestion={prefillQuestion}
               />
             )}
@@ -185,6 +205,7 @@ export default function HomePage() {
             {activeTab === "graph" && (
               <DecisionGraphView
                 datasetId={selectedDataset.id}
+                defaultQuestion={activeQuestion || getDatasetDefaultQuestion(selectedDataset)}
                 onSelectSimulation={() => setActiveTab("simulator")}
               />
             )}

@@ -18,11 +18,13 @@ build/
 dist/
 *.egg-info/
 
-# IDE
+# IDE & Editor
 .vscode/
 .idea/
 *.swp
 *.swo
+CLAUDE.md
+AGENTS.md
 
 # OS
 .DS_Store
